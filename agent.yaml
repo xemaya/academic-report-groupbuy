@@ -2,7 +2,7 @@ apiVersion: "a2h/v2"
 kind: "Agent"
 metadata:
   name: "academic_report_groupbuy"
-  version: "2.0.0"
+  version: "2.1.0"
   displayName: "学术报告团购"
   description: "3人成团，拼团获取高质量学术报告，每人仅需¥9.90"
 
