@@ -1,0 +1,74 @@
+apiVersion: "a2h/v2"
+kind: "Agent"
+metadata:
+  name: "academic_report_groupbuy"
+  version: "1.0.0"
+  displayName: "学术报告团购"
+  description: "3人成团，拼团获取高质量学术报告，每人仅需¥9.90"
+
+runtime:
+  type: "sandbox"
+  port: 8080
+  entrypoint: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080"]
+  concurrency: 4
+
+pool:
+  initial_workers: 2
+  max_workers: 5
+  min_workers: 0
+
+resources:
+  cpu: 0.5
+  memory: 512
+
+tools:
+  - "a2h.order.create"
+  - "a2h.order.get"
+  - "a2h.payment.alipay_checkout"
+  - "a2h.payment.checkout"
+  - "a2h.payment.status"
+
+env:
+  - name: A2H_TOKEN
+    required: true
+  - name: A2H_SHOP_ID
+    required: true
+  - name: A2H_SELLER_ID
+    required: true
+  - name: A2H_API_BASE
+    required: false
+  - name: REDIS_HOST
+    required: true
+  - name: REDIS_PORT
+    required: true
+  - name: REDIS_PASSWORD
+    required: false
+  - name: REDIS_TLS
+    required: false
+  - name: REDIS_KEY_PREFIX
+    required: true
+  - name: WORKS_ID
+    required: true
+
+capability:
+  task_family: "academic_report"
+  input_schema:
+    topic: "学术报告主题（如人工智能、气候变化、量子计算等）"
+  output_schema:
+    report: "生成的学术报告内容或文件"
+  examples:
+    - input:
+        topic: "人工智能"
+      output_preview: "人工智能领域最新学术进展报告，包含3篇核心论文解读..."
+    - input:
+        topic: "气候变化"
+      output_preview: "气候变化与可持续发展学术报告，涵盖最新研究成果..."
+  price_cny: 990
+  avg_seconds: 30
+  specialties:
+    - "学术论文解读"
+    - "科研报告生成"
+    - "前沿领域综述"
+    - "3人团购优惠"
+
+egress: []
